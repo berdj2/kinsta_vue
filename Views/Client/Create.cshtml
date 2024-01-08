@@ -1,0 +1,176 @@
+@model YDCManagementApp.Models.MultipleViewModel
+@{
+    ViewData["Title"] = "Test_create";
+}
+
+<!--CREATE SECTION-->
+<body>
+    <div class="container">
+        <div class="main-body">
+
+            <!--Top Content-->
+            <div class="card mt-5">
+                <div class="card-body bg-light">
+
+                    <!--Page Title-->
+                    <div class="col-12 col-sm-6 mb-3 text-center" style="align-self: center; color: white;" color="#fff">
+                    <h1 class="h1">Create client</h1>
+                    </div>
+                    <hr>
+
+                    <form id="createClientForm" asp-action="Create" data-ajax="true" data-ajax-method="POST">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="row pt-2">
+                            <!-- Left Side -->
+                            <!--Client Name-->
+                            <div class="col-12 col-sm-6 p-0">
+                                <div class="col-12 col-sm-12 mb-2">
+                                    <h6><label class="m-0" for="ClientName">Client Name</label></h6>
+                                    <input asp-for="Client.CompanyName" type="text" id="ClientName" maxlength="50" class="form-control form-control-sm" placeholder="Client Name" required>
+                                    <span asp-validation-for="Client.CompanyName" class="text-danger"></span>
+                                    <p class="clientnameError"></p>
+                                </div>
+
+                                <!--Website-->
+                                <div class="col-12 mb-2">
+                                    <h6><label class="m-0" for="ClientWebsite">Website</label></h6>
+                                    <input asp-for="Client.Website" type="url" id="ClientWebsite" maxlength="100" class="form-control form-control-sm" placeholder="Website" required>
+                                    <span asp-validation-for="Client.Website" class="text-danger"></span>
+                                    <p class="ClientWebsiteError"></p>
+                                </div>
+                            </div>
+
+                            <!-- Right Side -->
+                            <div class="col-12 col-sm-6 my-auto">
+                                <div class="row">
+                                    <!-- house address-->
+                                    <div class="col-12 col-sm-8 mb-2">
+                                        <h6><label class="m-0" for="ClientAddress">Address</label></h6>
+                                        <input asp-for="clientInfo.Street" type="text" id="ClientAddress" maxlength="50" class="form-control form-control-sm text-capitalize address-input" placeholder="Address" required>
+                                        <span asp-validation-for="clientInfo.Street" class="text-danger"></span>
+                                        <p class="ClientAddressError"></p>
+                                    </div>
+                                    <!--house number-->
+                                    <div class="col-12 col-sm-4 mb-2">
+                                        <h6><label class="m-0" for="ClientNumber">Number</label></h6>
+                                        <input asp-for="clientInfo.AddressNum" type="text" id="ClientNumber" maxlength="10" class="form-control form-control-sm w-75 text-center text-capitalize address-input" placeholder="4A" required>
+                                        <span asp-validation-for="clientInfo.AddressNum" class="text-danger"></span>
+                                        <p class="ClientHouseNumberError"></p>
+                                    </div>
+                                    <!--client city-->
+                                    <div class="col-12 col-sm-6 mb-2">
+                                        <h6><label class="m-0" for="ClientCity">City</label></h6>
+                                        <input asp-for="clientInfo.City" type="text" id="ClientCity" maxlength="30" class="form-control form-control-sm text-capitalize address-input" placeholder="City" required>
+                                        <span asp-validation-for="clientInfo.City" class="text-danger"></span>
+                                        <p class="ClientCityError"></p>
+                                    </div>
+                                    <!--client state-->
+                                    <div class="col-12 col-sm-6 mb-2">
+                                        <h6><label class="m-0" for="ClientState">State</label></h6>
+                                        <input asp-for="clientInfo.State" type="text" id="ClientState" maxlength="30" class="form-control form-control-sm text-capitalize address-input" placeholder="State" required>
+                                        <span asp-validation-for="clientInfo.State" class="text-danger"></span>
+                                        <p class="ClientStateError"></p>
+                                    </div>
+                                    <!--client country-->
+                                    <div class="col-12 col-sm-6 mb-2">
+                                        <h6><label class="m-0" for="ClientCountry">Country</label></h6>
+                                        <input asp-for="clientInfo.Country" type="text" id="ClientCountry" maxlength="50" class="form-control form-control-sm text-capitalize address-input" placeholder="Country" required>
+                                        <span asp-validation-for="clientInfo.Country" class="text-danger"></span>
+                                        <p class="ClientCountryError"></p>
+                                    </div>
+                                    <!--client zip-->
+                                    <div class="col-12 col-sm-6 mb-2">
+                                        <h6><label class="m-0" for="ClientZip">Zip</label></h6>
+                                        <input asp-for="clientInfo.ZipCode" type="text" id="ClientZip" maxlength="10" class="form-control form-control-sm text-uppercase address-input" placeholder="Zip" required>
+                                        <span asp-validation-for="clientInfo.ZipCode" class="text-danger"></span>
+                                        <p class="ClientZipError"></p>
+                                    </div>
+                                    <div class="form-group form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" asp-for="Client.ClientStatus" /> @Html.DisplayNameFor(model => model.Client.ClientStatus)
+                                            <span asp-validation-for="Client.ClientStatus" class="text-danger"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <!-- Button trigger customer information MODAL -->
+                        <div class="col-12 text-center">
+                            <button type="button" id="saveChangesButton" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmModal">
+                                Create
+                            </button>
+                            <a type="button" class="btn btn-primary" asp-controller="Project" asp-action="Index">Back</a>
+                        </div>
+
+                        <!-- customer information Modal -->
+                        <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5 text-center" id="exampleModalLabel">Confirm Information</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <!--Modal body-->
+                                    <div class="modal-body">
+                                        <div class="container" id="modalValues">
+                                            <ul class="p-0">
+                                                <!--List-item-->
+                                                <li class="row">
+                                                    <div class="downbutton col-12 col-sm-4">Client Name</div>
+                                                    <div class="dubbelpunt col-12 col-sm-2">:</div>
+                                                    <div class="thevalue col-12 col-sm-6">
+                                                        <p id="modalClientName"></p>
+                                                        <p class="clientnameError text-end p-0 m-0"></p>
+                                                    </div>
+                                                </li>
+                                                <li class="row">
+                                                    <div class="downbutton col-12 col-sm-4">Website</div>
+                                                    <div class="dubbelpunt col-12 col-sm-2">:</div>
+                                                    <div class="thevalue col-12 col-sm-6">
+                                                        <p id="modalWebsite"></p>
+                                                        <p class="ClientWebsiteError text-end p-0 m-0"></p>
+                                                    </div>
+                                                </li>
+                                                <li class="row">
+                                                    <div class="downbutton col-12 col-sm-4">Address</div>
+                                                    <div class="dubbelpunt col-12 col-sm-2">:</div>
+                                                    <div class="thevalue col-12 col-sm-6">
+                                                        <p id="modalAddress" class="p-0 m-0"></p>
+                                                        <p class="ClientFullAdressError text-end p-0 m-0"></p>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <!--Button to officially submit the form-->
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button id="OfficiallySubmitForm" type="button"  class="btn btn-primary">Confirm</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Script Section-->
+    <script>
+        $(document).ready(function () {
+            // Save changes button click event
+            $("#saveChangesButton").click(function () {
+                $("#modalClientName").text($("#ClientName").val());
+                $("#modalWebsite").text($("#ClientWebsite").val());
+                var address = $("#ClientAddress").val() + " " + $("#ClientNumber").val() + ", " + $("#ClientCity").val() + ", " + $("#ClientState").val() + ", " + $("#ClientCountry").val() + " " + $("#ClientZip").val();
+                $("#modalAddress").text(address);
+            });
+        });
+    </script>
+
+    <script type="module" src="~/js/CreateCustomer.js" asp-append-version="true"></script>
+    
+</body>

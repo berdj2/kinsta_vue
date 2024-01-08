@@ -1,0 +1,88 @@
+@model YDCManagementApp.Data.ProjectHoursLog
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container">
+    @* Page cardbox *@
+    <div class="mt-5 p-4 bg-light border border-dark rounded">
+        @* Page Title *@
+        <div class="col-12 text-center text-capitalize p-0">
+            <h1>Edit Time</h1>
+        </div>
+        <hr>
+		
+		@* form *@
+		<form asp-action="Edit" asp-controller="ProjectHoursLogs" method="post">
+			<input type="hidden" asp-for="Id"/>
+			<input type="hidden" asp-for="UserId"/>
+			<input type="hidden" asp-for="ProjectId"/>
+
+			<div class="row p-3">
+				@* Start Time *@
+				<div class="col-4 column-calender p-2">
+					<div class="form-group">
+						<label asp-for="DateStartTime" class="control-label">Date Start Time</label>
+						<input type="datetime-local" id="DateStartTime" asp-for="DateStartTime" class="form-control form-control-sm" name="DateStartTime" required/>
+						<span asp-validation-for="DateStartTime" class="text-danger StartTimeError"></span>
+					</div>
+				</div>
+
+				@* End Time *@
+				<div class="col-4 column-calender p-2">
+					<div class="form-group">
+						<label asp-for="DateEndTime" class="control-label">Date End Time</label>
+						<input type="datetime-local" id="DateEndTime" asp-for="DateEndTime" class="form-control form-control-sm" name="DateEndTime" required/>
+						<span asp-validation-for="DateEndTime" class="text-danger EndTimeError"></span>
+					</div>
+				</div>
+
+				@* Time Difference *@
+				<div class="col-4 column-calender p-2">
+					<div class="form-group">
+						<label asp-for="DateTimeDiff" class="control-label">Hours Worked</label>
+						<input type="text" id="DateTimeDiff" asp-for="DateTimeDiff" class="form-control form-control-sm" readonly>
+						<span asp-validation-for="DateTimeDiff" class="text-danger TimeDiffError"></span>
+					</div>
+				</div>
+			</div>
+			<hr>
+
+			@* Buttons *@
+			<div class="row">
+                <div class="m-0 text-center">
+					<button type="button" id="savechanges" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#LoghoursModal">Update hours</button>
+					<a asp-action="Details" asp-controller="Project" asp-route-id="@Model.ProjectId" class="btn btn-danger">Return to Project</a>
+				</div>
+			</div>
+
+
+			@*Modal*@
+			<div class="modal fade" id="LoghoursModal" tabindex="-1" aria-labelledby="LoghoursModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">Log Hours Confirmation</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<p>Date Time: <span id="ModalDateStartTime"></span><p>
+							<p class="StartTimeError"></p>
+							<p>Start Time: <span id="ModalDateEndTime"></span><p>
+							<p class="EndTimeError"></p>
+							<p>End Time: <span id="ModalDateTimeDiff"></span><p>
+							<p class="TimeDiffError"></p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="button" id="OfficiallySubmitForm" class="btn btn-success">Add Hours</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+@* modal script *@
+<script src="~/js/ProjectModalDetails.js" asp-append-version="true"></script>

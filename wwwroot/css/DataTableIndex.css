@@ -1,0 +1,135 @@
+td {
+    border-right: 1px solid rgb(84, 84, 84) !important;
+}
+
+td:last-child {
+    border-right: 0 !important;
+}
+
+@media only screen and (max-width: 992px) {
+    table {
+        font-size: small !important; 
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    table {
+        font-size: large !important; 
+    }
+}
+
+.filter-container {
+    border: 0px solid #ddd;
+    border-radius: 0px;
+    padding: 0px;
+    margin-bottom: 0px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filter-container label,
+.filter-container select,
+.filter-container input,
+.filter-container button {
+    margin: 5px;
+    flex: 0 0 calc(15% - 10px);
+}
+
+.filter-container {
+    border: 0px solid #ddd;
+    border-radius: 0px;
+    padding: 0px;
+    margin-bottom: 0px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filter-container label,
+.filter-container select,
+.filter-container input,
+.filter-container button {
+    margin: 5px;
+    flex: 0 0 calc(15% - 10px);
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+   width: 10px;
+   height: 34px;
+   padding: 0%;
+ }
+
+.switch input { 
+opacity: 0;
+width: 0;
+height: 0;
+}
+
+.slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: red;
+-webkit-transition: .3s;
+transition: .3s;
+}
+
+.slider:before {
+position: absolute;
+content: "";
+height: 26px;
+width: 26px;
+left: 4px;
+bottom: 4px;
+background-color: white;
+-webkit-transition: .3s;
+transition: .3s;
+}
+
+input:checked + .slider {
+background-color: green;
+}
+
+input:focus + .slider {
+box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+-webkit-transform: translateX(120px);
+-ms-transform: translateX(120px);
+transform: translateX(120px);
+}
+
+/* Rounded sliders */
+.slider.round {
+border-radius: 34px;
+}
+
+.slider.round:before {
+border-radius: 50%;
+}
+.slider:after
+{
+content:'Incative';
+color: white;
+display: block;
+position: absolute;
+transform: translate(-50%,-50%);
+top: 50%;
+left: 50%;
+font-size: 15px;
+font-family: Verdana, sans-serif;
+}
+
+input:checked + .slider:after
+{  
+content:'Active';
+}

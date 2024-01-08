@@ -1,0 +1,80 @@
+@model YDCManagementApp.Models.ProjectsAndCustomerViewModel;
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<body>
+    <!--Page content-->
+    <div class="mt-5">
+        <div class="card m-auto">
+            <!--Page Title-->
+            <div class="col-12 text-center text-capitalize mt-3">
+                <h1>Contact Details</h1>
+            </div>
+            <hr>
+            <div class="card-body">
+                <div class="container">
+                    @foreach (var contact in Model.ClientContacts)
+                    {
+                        <div class="row">
+                            <div class="downbutton col-12 col-sm-4 text-center">Company</div>
+                            <div class="col-4 dubbelpunt text-center">:</div>
+                            <div class="col-12 col-sm-4 thevalue text-center">
+                                @foreach (var client in Model.Clients.Where(c => c.Id == contact.ClientId))
+                                {
+                                    <p>@Html.DisplayFor(modelItem => client.CompanyName)</p>
+                                }
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="downbutton col-12 col-sm-4 text-center">Name</div>
+                            <div class="col-4 dubbelpunt text-center">:</div>
+                            <div class="col-12 col-sm-4 thevalue text-center">
+                                <p>@Html.DisplayFor(modelItem => contact.FirstName) @Html.DisplayFor(model => contact.LastName)</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="downbutton col-12 col-sm-4 text-center">Office number</div>
+                            <div class="col-4 dubbelpunt text-center">:</div>
+                            <div class="col-12 col-sm-4 thevalue text-center">
+                                <p>@Html.DisplayFor(modelItem => contact.CallingCodeOffice) - @Html.DisplayFor(modelItem => contact.OfficePhoneNumber)</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="downbutton col-12 col-sm-4 text-center">Mobile</div>
+                            <div class="col-4 dubbelpunt text-center">:</div>
+                            <div class="col-12 col-sm-4 thevalue text-center">
+                                <p>@Html.DisplayFor(modelItem => contact.CallingCodeMobile) - @Html.DisplayFor(modelItem => contact.MobileNumber)</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="downbutton col-12 col-sm-4 text-center">Email</div>
+                            <div class="col-4 dubbelpunt text-center">:</div>
+                            <div class="col-12 col-sm-4 thevalue text-center">
+                                <p>@Html.DisplayFor(modelItem => contact.Email)</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="downbutton col-12 col-sm-4 text-center">Function</div>
+                            <div class="col-4 dubbelpunt text-center">:</div>
+                            <div class="col-12 col-sm-4 thevalue text-center">
+                                @* <p>@Html.DisplayFor(modelItem => contact.FunctionId.FirstOrDefault().FunctionName)</p> *@
+                                <p>@Html.DisplayFor(modelItem => contact.Functions.FunctionName)</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <hr>
+                <!--Buttons  edit and delete.-->
+                <div class="text-center mt-3">
+                    <a type="Button" class="btn btn-info" asp-action="Edit" asp-route-id="@Model.ClientContacts.FirstOrDefault().Id">Edit</a>
+                    <a type="button" class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.ClientContacts.FirstOrDefault().Id">Delete</a>
+                    <a type="button" class="btn btn-primary" asp-action="Index">Back To List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/js/Contacts.js" asp-append-version="true"></script>
+    <script src="~/js/ResponsiveModal.js" asp-append-version="true"></script>
+</body>

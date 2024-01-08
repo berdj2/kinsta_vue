@@ -1,0 +1,218 @@
+@model YDCManagementApp.Data.ClientContact
+@{
+}
+
+<body>
+	<div class="container p-0">
+		<!--Page Content-->
+		<div class="mt-5 p-4 bg-light border border-dark rounded">
+			<!--Page Title-->
+			<div class="col-12 col-sm-6 mb-3 text-center" style="align-self: center; color: white;" color="#fff">
+                    <h1 class="h1">Edit Contact</h1>
+			</div>
+			<hr>
+			<form asp-action="Edit" id="createContactForm" data-ajax="true" data-ajax-method="POST">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<input type="hidden" asp-for="Id" />
+				<div>
+					<!--above section-->
+					<div class="row">
+						<!--Firstname-->
+						<div class="col-12 col-sm-5 mb-2">
+							<h6><label class="m-0">Firstname</label></h6>
+							<input asp-for="FirstName" id="Firstname" type="text" maxlength="30" class="form-control form-control-sm" placeholder="kevin" required>
+							<p class="FirstNameError m-0 p-0"></p>
+						</div>
+						<!--Infix-->
+						<div class="col-12 col-sm-2 mb-2">
+							<h6><label class="m-0">Infix</label></h6>
+							<input asp-for="Infix" id="Infix" type="text" maxlength="20" class="form-control form-control-sm" placeholder="van">
+							<p class="InfixError m-0 p-0"></p>
+						</div>
+						<!--Lastname-->
+						<div class="col-12 col-sm-5 mb-2">
+							<h6><label class="m-0">Lastname</label></h6>
+							<input asp-for="LastName" id="Lastname" type="text" maxlength="30" class="form-control form-control-sm" placeholder="dirkszen" required>
+							<p class="LastNameError m-0 p-0"></p>
+						</div>
+						<!--Email-->
+						<div class="col-12 mb-2">
+							<h6><label class="m-0">Email</label></h6>
+							<input asp-for="Email" id="Email" type="email" maxlength="50" class="form-control form-control-sm" aria-describedby="emailHelp" placeholder="kevin.van.dirkszen@gmail.com" required>
+							<p class="EmailError m-0 p-0"></p>
+						</div>
+					</div>
+
+					<div class="row">
+						<!-- Client Name-->
+						<div class="col-12 col-sm-5 mb-2">
+							<h6><label class="m-0" for="Clientname">Client Name</label></h6>
+                                <select asp-for="ClientId" class="form-control" asp-items="ViewBag.Id"></select>
+							<p class="ClientNameError m-0 p-0"></p>
+						</div>
+						<!-- Functions -->
+						<div class="col-12 col-sm-5 mb-2">
+							<h6><label class="m-0" asp-for="Functions"></label></h6>
+                                <select id="FunctionId" asp-for="FunctionId" class="form-control" asp-items="ViewBag.Functions"></select>
+								<span asp-validation-for="FunctionId" class="text-danger"></span>
+							<p class="FunctionsError m-0 p-0"></p>
+						</div>
+					</div>
+					<!--under section-->
+					<div class="row">
+						<!--Telephone-->
+						<div class="col-12 col-sm-5 mb-2">
+							<h6><label class="m-0">Code</label></h6>
+							<select asp-for="CallingCodeOffice" id="TelephoneCaller" class="TelephoneCaller form-select form-control-sm" required>
+								<option value="" selected>Calling Code</option>
+								<option id="OptionSelectedTelephoneId" value="@Model.CallingCodeOffice" selected></option>
+							</select>
+							<span asp-validation-for="CallingCodeOffice" class="text-danger"></span>
+							<p class="TelephoneCodeError m-0 p-0"></p>
+						</div>
+						<div class="col-12 col-sm-6 mb-2">
+							<div class="row">
+								<h6 class="col-12"><label class="m-0">Phone</label></h6>
+								<input type="text" id="TelephoneCodeValue" class="col-4 form-control form-control-sm" readonly value="">
+								<input asp-for="OfficePhoneNumber" id="Telephone_number" type="tel" minlength="9" maxlength="15" class="col-8 form-control form-control-sm" placeholder="6123456789" value="@Model.OfficePhoneNumber" required>
+								<span asp-validation-for="OfficePhoneNumber" class="text-danger"></span>
+							</div>
+							<p class="TelephoneNumberError m-0 p-0"></p>
+						</div>
+
+						<!--Mobile-->
+						<div class="col-12 col-sm-5 mb-2">
+							<h6><label class="m-0">Code</label></h6>
+							<select asp-for="CallingCodeMobile"  id="MobileCaller" class="MobileCaller form-select form-control-sm" required>
+								<option value="" selected>Calling Code</option>
+								<option id="OptionSelectedMobileId" value="@Model.CallingCodeMobile" selected></option>
+							</select>
+							<span asp-validation-for="CallingCodeMobile" class="text-danger"></span>
+							<p class="MobileCodeError m-0 p-0"></p>
+						</div>
+						<div class="col-12 col-sm-6 mb-2">
+							<div class="row">
+								<h6 class="col-12"><label class="m-0">Mobile</label></h6>
+								<input type="text" id="MobileCodeValue" class="col-4 form-control form-control-sm" readonly value="">
+								<input asp-for="MobileNumber" id="Mobile_number" type="tel" minlength="9" maxlength="15" class="col-8 form-control form-control-sm" placeholder="6123456789" value="@Model.MobileNumber" required>
+								<span asp-validation-for="MobileNumber" class="text-danger"></span>
+							</div>
+							<p class="MobileNumberError m-0 p-0"></p>
+						</div>
+					</div>
+				</div>
+				<hr>
+				<!--Next Button-->
+				<!--This button opens op a model with the values that where in set in the form.-->
+				<div class="form-group text-center">
+					<button type="button" id="saveChangesButton" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmModal">Save Changes</button>
+					<a class="btn btn-primary" asp-action="Details" asp-route-id="@Model.Id">Back to Contact</a>
+				</div>
+
+				<!-- customer information Modal -->
+				<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="ModalBoxLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h1 class="modal-title fs-5 text-center" id="ModalBoxLabel">Confirm Information</h1>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<!--Modal body-->
+							<div class="modal-body">
+								<div class="container" id="modalvalues">
+									<ul class="p-0">
+										<!--List-item-->
+										<!--Firstname-->
+										<li class="row">
+											<div class="downbutton col-12 col-sm-4">Firstname</div>
+											<div class="dubbelpunt col-12 col-sm-2">:</div>
+											<div class="thevalue col-12 col-sm-6 p-0">
+												<p id="Firstnamemodal"></p>
+												<p class="FirstNameError m-0 p-0 text-end"></p>
+											</div>
+										</li>
+										<!--Infix-->
+										<li class="row">
+											<div class="downbutton col-12 col-sm-4">Infix</div>
+											<div class="dubbelpunt col-12 col-sm-2">:</div>
+											<div class="thevalue col-12 col-sm-6 p-0">
+												<p id="Infixmodal"></p>
+												<p class="InfixError m-0 p-0 text-end"></p>
+											</div>
+										</li>
+										<!--Lastname-->
+										<li class="row">
+											<div class="downbutton col-12 col-sm-4">Lastname</div>
+											<div class="dubbelpunt col-12 col-sm-2">:</div>
+											<div class="thevalue col-12 col-sm-6 p-0">
+												<p id="Lastnamemodal"></p>
+												<p class="LastNameError m-0 p-0 text-end"></p>
+											</div>
+										</li>
+										<!--Email-->
+										<li class="row">
+											<div class="downbutton col-12 col-sm-4">Email</div>
+											<div class="dubbelpunt col-12 col-sm-2">:</div>
+											<div class="thevalue col-12 col-sm-6 p-0">
+												<p id="Emailmodal"></p>
+												<p class="EmailError m-0 p-0 text-end"></p>
+											</div>
+										</li>
+										<!--Clientname-->
+										<li class="row">
+											<div class="downbutton col-12 col-sm-4">Client Name</div>
+											<div class="dubbelpunt col-12 col-sm-2">:</div>
+											<div class="thevalue col-12 col-sm-6 p-0">
+												<p id="Clientnamemodal"></p>
+												<p class="ClientNameError m-0 p-0 text-end"></p>
+											</div>
+										</li>
+										<!--Function-->
+										<li class="row">
+											<div class="downbutton col-12 col-sm-4">Function</div>
+											<div class="dubbelpunt col-12 col-sm-2">:</div>
+											<div class="thevalue col-12 col-sm-6 p-0">
+												<p id="Functionsmodal"></p>
+												<p class="FunctionsError m-0 p-0 text-end"></p>
+											</div>
+										</li>
+										<!--Telephone-->
+										<li class="row">
+											<div class="downbutton col-12 col-sm-4">Telephone</div>
+											<div class="dubbelpunt col-12 col-sm-2">:</div>
+											<div class="thevalue col-12 col-sm-6 p-0">
+												<p id="Telephonemodal"></p>
+												<p class="TelephoneNumberError m-0 p-0 text-end"></p>
+												<p class="TelephoneCodeError m-0 p-0 text-end"></p>
+											</div>
+										</li>
+										<!--Mobile-->
+										<li class="row">
+											<div class="downbutton col-12 col-sm-4">Mobile</div>
+											<div class="dubbelpunt col-12 col-sm-2">:</div>
+											<div class="thevalue col-12 col-sm-6 p-0">
+												<p id="Mobilemodal"></p>
+												<p class="MobileNumberError m-0 p-0 text-end"></p>
+												<p class="MobileCodeError m-0 p-0 text-end"></p>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+
+							<!--Button to officialy submit the form-->
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+								<button id="OfficialySubmitForm" type="button" class="btn btn-primary">Confirm</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+    <script type="module" src="~/js/landcode_input.js" asp-append-version="true"></script>
+	<script type="module" src="~/js/Create_contact.js" asp-append-version="true"></script>
+
+</body>

@@ -1,0 +1,35 @@
+
+
+#cardoverview {
+    height: 5em;
+    -ms-overflow-style: none;  /* IE and Edge , remove the scroll bar icon. its still scrollable but not viewable*/
+    scrollbar-width: none;  /* Firefox , remove the scroll bar icon. its still scrollable but not viewable*/
+    white-space: nowrap;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#adresfather {
+    height: 4em;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#adreschild {
+    -ms-overflow-style: none;  /* IE and Edge , remove the scroll bar icon. its still scrollable but not viewable*/
+    scrollbar-width: none;  /* Firefox , remove the scroll bar icon. its still scrollable but not viewable*/
+    white-space: nowrap; 
+    overflow: scroll;
+}
+
+/* remove the scroll bar icon. its still scrollable but not viewable */
+#adresfather::-webkit-scrollbar, #adreschild::-webkit-scrollbar, .fix::-webkit-scrollbar, #cardoverview::-webkit-scrollbar {
+    display: none;
+}
+
+.fix {
+    height: 2em;
+    overflow: scroll;
+    -ms-overflow-style: none;  /* IE and Edge , remove the scroll bar icon. its still scrollable but not viewable*/
+    scrollbar-width: none;  /* Firefox , remove the scroll bar icon. its still scrollable but not viewable*/
+}

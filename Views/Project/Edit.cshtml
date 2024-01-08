@@ -1,0 +1,239 @@
+@model YDCManagementApp.Data.Project
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container">
+    @* Page cardbox *@
+    <div class="mt-5 p-4 bg-light border border-light rounded">
+        @* Page Title *@
+        <div class="col-12 col-sm-6 mb-3 text-center" style="align-self: center; color: white;" color="#fff">
+             <h1 class="h1">Edit Project</h1>
+        </div>
+        <hr>
+
+        @* Page Data *@
+        <form asp-action="Edit" asp-controller="Project" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+            <div class="form-group" style="display: none;">
+                <label asp-for="ClientId" class="control-label">Company name</label>
+                <select id="ClientId" class="form-control" asp-items="@ViewBag.ClientId" name="ClientId" asp-selected="@Model.ClientId"></select>
+                <span asp-validation-for="ClientId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="display: none;">
+                <label asp-for="ExpertiseId" class="control-label">Expertise</label>
+                <select asp-for="ExpertiseId" id="ExpertiseId" class="form-control" asp-items="@ViewBag.ExpertiseId" name="ExpertiseId"></select>
+                <span asp-validation-for="ExpertiseId" class="text-danger"></span>
+            </div>
+
+
+            @* Upper Section *@
+            <div class="row">
+                @* Left Part Of Box *@
+                <div id="left" class="col-md-6 col-12">
+                    @* Project Name *@
+                    <div class="form-group">
+                        <label asp-for="ProjectName" class="control-label"></label>
+                        <input id="ProjectName" asp-for="ProjectName" class="form-control" maxlength="50" value="@Model.ProjectName">
+                        <span asp-validation-for="ProjectName" class="text-danger"></span>
+                        <p class="ProjectNameError"></p>
+                    </div>
+
+                    @* Contact Name*@
+                    <div class="form-group">
+                        <label class="control-label">Contact</label>
+                        <select id="ContactId" asp-for="ContactId" class="form-control" asp-items="@ViewBag.ContactId"></select>
+                        <p class="ContactError"></p>
+                    </div>
+
+                    @* Project Status *@
+                    <div class="form-group form-switch p-0">
+    <label class="form-check-label">
+        @Html.DisplayNameFor(model => model.ProjectStatus)
+        <input id="ProjectStatus" type="checkbox" class="form-check-input ml-1" asp-for="ProjectStatus" data-toggle="switch" checked>
+                <p class="StatusError"></p>
+
+                        </label>
+                    </div>
+                </div>
+
+                @* Right Part Of Box *@
+                <div id="right" class="col-md-6 col-12">
+                    @* Project Deadline *@
+                    <div class="form-group">
+                        <label asp-for="ProjectDeadline" class="control-label"></label>
+                        <input id="ProjectDeadline" asp-for="ProjectDeadline" class="form-control" value='@Model.ProjectDeadline.ToString("yyyy-MM-ddTHH:mm:ss")'>
+                        <span asp-validation-for="ProjectDeadline" class="text-danger"></span>
+                        <p class="DeadlineError"></p>
+                    </div>
+
+                    @* Model Description *@
+                    <div class="form-group">
+                        <label asp-for="ProjectDescription" class="control-label"></label>
+                        <textarea id="Description" asp-for="ProjectDescription" class="form-control" maxlength="600">@Model.ProjectDescription</textarea>
+                        <span asp-validation-for="ProjectDescription" class="text-danger"></span>
+                        <p class="DescriptionError"></p>
+                    </div>
+
+                </div>
+            </div>
+            <hr>
+
+            @* Button section *@
+            <div class="row">
+                <div class="m-0 text-center">
+                    @* Save Button *@
+                    <button type="button" id="SubmitForm" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal">Save Changes</button>
+                    @* Page Back button *@
+                    <a type="button" class="btn btn-danger" asp-action="Index">Back</a> 
+                </div>
+            </div>
+
+            @* Confirm Modal *@
+            <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="ModalBoxLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        @* Modal header *@
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 text-center" id="ModalBoxLabel">Confirm Information</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        @* Modal body *@
+                        <div class="modal-body">
+                            <div class="container" id="modalvalues">
+                                <ul class="p-0">
+                                    <!--List-item-->
+                                    <!--Project Name-->
+                                    <li class="row">
+                                        <div class="downbutton col-12 col-sm-4">Projectname</div>
+                                        <div class="dubbelpunt col-12 col-sm-2">:</div>
+                                        <div class="thevalue col-12 col-sm-6 p-0">
+                                            <p id="Projectnamemodal"></p>
+                                            <p class="ProjectnameError m-0 p-0 text-end"></p>
+                                        </div>
+                                    </li>
+                                    <!--Contact-->
+                                    <li class="row">
+                                        <div class="downbutton col-12 col-sm-4">Contact</div>
+                                        <div class="dubbelpunt col-12 col-sm-2">:</div>
+                                        <div class="thevalue col-12 col-sm-6 p-0">
+                                            <p id="Contactmodal"></p>
+                                            <p class="ContactError m-0 p-0 text-end"></p>
+                                        </div>
+                                    </li>
+                                    <!--Project status-->
+                                    <li class="row">
+                                        <div class="downbutton col-12 col-sm-4">Status</div>
+                                        <div class="dubbelpunt col-12 col-sm-2">:</div>
+                                        <div class="thevalue col-12 col-sm-6 p-0">
+                                            <p id="Statusmodal"></p>
+                                            <p class="StatusError m-0 p-0 text-end"></p>
+                                        </div>
+                                    </li>
+                                    <!--Project deadline-->
+                                    <li class="row">
+                                        <div class="downbutton col-12 col-sm-4">Deadline</div>
+                                        <div class="dubbelpunt col-12 col-sm-2">:</div>
+                                        <div class="thevalue col-12 col-sm-6 p-0">
+                                            <p id="Deadlinemodal"></p>
+                                            <p class="DeadlineError m-0 p-0 text-end"></p>
+                                        </div>
+                                    </li>
+                                    <!--Description-->
+                                    <li class="row">
+                                        <div class="downbutton col-12 col-sm-4">Description</div>
+                                        <div class="dubbelpunt col-12 col-sm-2">:</div>
+                                        <div class="thevalue col-12 col-sm-6 p-0">
+                                            <p id="Descriptionmodal"></p>
+                                            <p class="DescriptionError m-0 p-0 text-end"></p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!--Button to officialy submit the form-->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" id="OfficiallySubmitForm" value="Edit" class="btn btn-primary">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // When the document is fully loaded
+        $(document).ready(function () {
+            // Trigger the change event of the 'ClientId' dropdown to load contacts
+            $('#ClientId').trigger('change');
+
+            // Load the 'ExpertiseId' dropdown based on the selected value in Model
+            loadExpertiseDropdown('@Model.ExpertiseId');
+        });
+
+        // Attach a change event handler to the 'ClientId' dropdown
+        $('#ClientId').change(function () {
+            // Get the selected clientId
+            var clientId = $(this).val();
+
+            // Make an AJAX request to the 'GetContactsByClientId' action method
+            $.ajax({
+                url: '@Url.Action("GetContactsByClientId", "Project")',
+                type: 'GET',
+                data: { clientId: clientId },
+                success: function (response) {
+                    // Clear the 'ContactId' dropdown
+                    var contacts = $('#ContactId');
+                    contacts.empty();
+
+                    // Iterate over the response and add options to the 'ContactId' dropdown
+                    $.each(response, function (i, contact) {
+                        contacts.append($('<option></option>').val(contact.value).text(contact.text));
+                    });
+
+                    // Enable the 'ContactId' dropdown
+                    contacts.prop('disabled', false);
+
+                    // Set the selected option in the 'ContactId' dropdown based on Model.ContactId
+                    var contactId = '@Model.ContactId';
+                    contacts.val(contactId); // Set the selected value
+                },
+                error: function (xhr, status, error) {
+                    // Log any errors to the console
+                    console.log(error);
+                }
+            });
+        });
+
+        // Function to load the 'ExpertiseId' dropdown based on the selected value
+        function loadExpertiseDropdown(selectedValue) {
+            $.ajax({
+                url: '@Url.Action("GetExpertises", "Project")', // Replace with your action method to get expertises
+                type: 'GET',
+                success: function (response) {
+                    var expertiseDropdown = $('#ExpertiseId');
+                    expertiseDropdown.empty();
+
+                    $.each(response, function (i, expertise) {
+                        expertiseDropdown.append($('<option></option>').val(expertise.value).text(expertise.text));
+                    });
+
+                    // Set the selected option in the 'ExpertiseId' dropdown based on the selected value
+                    expertiseDropdown.val(selectedValue);
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        }
+    </script>
+    <script src="~/js/ProjectModalValidationEdit.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,224 @@
+@model YDCManagementApp.Models.ProjectsAndCustomerViewModel;
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<!--Add css to this page-->
+<link rel="stylesheet" type="text/css" href="~/css/ClientDetails.css" asp-append-version="true">
+
+<body>
+    <div class="container">
+        <div class="main-body">
+            <!--Top Content-->
+            <div class="row">
+
+                <!--Customer image and slogan-->
+                <div class="col-sm-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-column align-items-center text-center">
+                                <img src="/img/pngtree-vector-office-building-icon-png-image_953174.jpg" alt="Admin"
+                                    class="img-thumbnail" width="150">
+                                <div class="mt-3">
+                                    <h4>
+                                        @Html.DisplayFor(model => model.Clients.FirstOrDefault().CompanyName)
+                                    </h4>
+                                    <p class="text-secondary mb-1">Company information.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Project Details-->
+                <div class="mb-3 col-sm-6">
+                    <div class="card h-100">
+                        <div id="cardoverview" class="card-body p-2">
+                            <h4 class="text-info text-center">Project Overview</h4>
+                            <!--Scrollable list-->
+                            <div class="scroll-list">
+                                <ul class="list-group list-group-flush">
+
+                                    <!--List-item-->
+                                    @foreach (var project in Model.Projects)
+                                    {
+                                        <li class="list-group-item p-1 border border-1">
+                                            <div class="row">
+                                                <div class="col-12 col-sm-6 px-0">
+                                                    <h5 class="text-center text-capitalize m-0 px-3">@Html.DisplayFor(modelItem
+                                                    => project.ProjectName)</h5>
+                                                    <p class="fix text-muted text-center m-0 px-3">@Html.DisplayFor(modelItem =>
+                                                    project.ProjectDescription)</p>
+                                                </div>
+                                                <div
+                                                    class="col-12 col-sm-6 align-self-center text-center text-capitalize px-0">
+                                                    <a class="btn btn-info" asp-controller="Project" asp-action="Details"
+                                                        asp-route-id="@project.Id">project details</a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Bottom Content-->
+            <!--Customer Details-->
+            <div class="row">
+                <div class="mb-3 col-sm-6">
+                    <div class="card h-100">
+                        <div class="card-body p-2">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Company Name</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    @Html.DisplayFor(model => model.Clients.FirstOrDefault().CompanyName)
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Website</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    @Html.DisplayFor(model => model.Clients.FirstOrDefault().Website)
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Phone</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    @Html.DisplayFor(model => model.ClientContacts.FirstOrDefault().CallingCodeOffice)
+                                    @Html.DisplayFor(model => model.ClientContacts.FirstOrDefault().OfficePhoneNumber)
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Mobile</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    @Html.DisplayFor(model => model.ClientContacts.FirstOrDefault().CallingCodeMobile)
+                                    @Html.DisplayFor(model => model.ClientContacts.FirstOrDefault().MobileNumber)
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Address</h6>
+                                </div>
+                                <div id="adresfather" class="col-sm-9 text-secondary">
+                                    @foreach (var item in Model.ClientInfo)
+                                    {
+                                        <div id="adreschild" class="border-bottom border-light">
+                                            @Html.DisplayFor(modelItem => item.Street)
+                                            @Html.DisplayFor(modelItem => item.ZipCode)
+                                            @Html.DisplayFor(modelItem => item.State)
+                                            @Html.DisplayFor(modelItem => item.City)
+                                            @Html.DisplayFor(modelItem => item.Country)
+                                            @Html.DisplayFor(modelItem => item.AddressNum)
+
+                                            <a asp-controller="ClientInfo" asp-action="Edit"
+                                                asp-route-id="@item.Id">Edit</a> |
+                                            <a asp-controller="ClientInfo" asp-action="Details"
+                                                asp-route-id="@item.Id">Details</a> |
+                                            <a asp-controller="ClientInfo" asp-action="Delete"
+                                                asp-route-id="@item.Id">Delete</a>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-12  text-end">
+                                    <a class="btn btn-warning w-25" asp-controller="ClientInfo" asp-action="Create" asp-route-id="@Model.Clients.FirstOrDefault().Id" >Add address</a>
+                                    <a class="btn btn-primary w-25" asp-action="Edit"
+                                        asp-route-id="@Model.Clients.FirstOrDefault().Id">Edit</a>
+                                    <a class="btn btn-danger w-25" asp-action="Delete"
+                                        asp-route-id="@Model.Clients.FirstOrDefault().Id">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Project Details-->
+                <div class="mb-3 col-sm-6">
+                    <div class="card h-100">
+                        <div class="card-body p-2">
+                            <h4 class="text-info text-center">API</h4>
+                            <!--Scrollable list-->
+                            <div class="scroll-list">
+                                <ul class="list-group list-group-flush">
+                                    <!--List-item-->
+                                    <li class="list-group-item p-1 border border-1">
+                                        <div class="row">
+                                            <div class="col-12 col-sm-6 px-0">
+                                                <h5 class="text-center text-capitalize m-0">SharePoint</h5>
+                                                <p class="text-muted text-center m-0">Sharepoint environment created:
+                                                    16-8-2023</p>
+                                            </div>
+                                            <div
+                                                class="col-12 col-sm-6 align-self-center text-center text-capitalize px-0">
+                                                <a class="btn btn-info" asp-controller="Project"
+                                                    asp-action="Details">Api Details</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item p-1 border border-1"></li>
+                                         <div class="row">
+                                            <div class="col-12 col-sm-6 px-0">
+                                                <h5 class="text-center text-capitalize m-0">Confluence</h5>
+                                                <p class="text-muted text-center m-0">not setup</p>
+                                            </div>
+                                            @{
+                                                // Capture the ClientId from the URL
+                                                int clientId = Convert.ToInt32(Context.Request.Query["id"]);
+                                            }
+
+                                            <div class="col-12 col-sm-6 align-self-center text-center text-capitalize px-0">
+                                                <a class="btn btn-info btn-confluence" href="#">create Confluence page</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $(".btn-confluence").on("click", function () {
+                var clientId = @clientId; // Replace with the actual client ID from your Razor code
+                var apiUrl = "/Api/ConfluenceApi?id=" + clientId;
+
+                $.ajax({
+                    url: apiUrl,
+                    method: "GET",
+                    success: function (data) {
+                        // Handle success response
+                        console.log(data);
+                        alert("Confluence API call successful!"); // Show a message popup
+                    },
+                    error: function (error) {
+                        // Handle error response
+                        console.error(error);
+                        alert("Confluence API call failed!"); // Show a message popup
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>

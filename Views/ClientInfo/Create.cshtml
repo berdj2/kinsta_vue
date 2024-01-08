@@ -1,0 +1,181 @@
+@model YDCManagementApp.Models.MultipleViewModel
+
+@{
+    ViewData["Title"] = "Create";
+
+}
+
+<div class="container">
+    <div class="card mt-5">
+        <div class="card-body bg-light">
+
+            @* title *@
+            <div class="col-12 col-sm-6 mb-3 text-center" style="align-self: center; color: white;" color="#fff">
+                <h1 class="h1">Create ClientInfo</h1>
+            <hr />
+
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+
+                    @* left *@
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="Client.CompanyName" class="control-label"></label>
+                            <select id="ClientName" asp-for="clientInfo.ClientId" class="form-control" asp-items="ViewBag.ClientName" asp-selected="Model.Client.Id"></select>
+                            <p class="CompanyNameError text-end p-0 m-0"></p>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="clientInfo.Street" class="control-label"></label>
+                            <input id="Street" asp-for="clientInfo.Street" class="form-control" value="" />
+                            <span asp-validation-for="clientInfo.Street" class="text-danger"></span>
+                            <p class="StreetError text-end p-0 m-0"></p>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="clientInfo.ZipCode" class="control-label"></label>
+                            <input id="ZipCode" asp-for="clientInfo.ZipCode" class="form-control" value=""/>
+                            <span asp-validation-for="clientInfo.ZipCode" class="text-danger"></span>
+                            <p class="ZipcodeError text-end p-0 m-0"></p>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="clientInfo.State" class="control-label"></label>
+                            <input id="State" asp-for="clientInfo.State" class="form-control" value=""/>
+                            <span asp-validation-for="clientInfo.State" class="text-danger"></span>
+                            <p class="StateError text-end p-0 m-0"></p>
+                        </div>
+                    </div>
+
+                    @* right *@
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="clientInfo.City" class="control-label"></label>
+                            <input id="City" asp-for="clientInfo.City" class="form-control" value=""/>
+                            <span asp-validation-for="clientInfo.City" class="text-danger"></span>
+                            <p class="CityError text-end p-0 m-0"></p>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="clientInfo.Country" class="control-label"></label>
+                            <input id="Country" asp-for="clientInfo.Country" class="form-control" value=""/>
+                            <span asp-validation-for="clientInfo.Country" class="text-danger"></span>
+                            <p class="CountryError text-end p-0 m-0"></p>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="clientInfo.AddressNum" class="control-label"></label>
+                            <input id="AdressNum" asp-for="clientInfo.AddressNum" class="form-control" value=""/>
+                            <span asp-validation-for="clientInfo.AddressNum" class="text-danger"></span>
+                            <p class="AdressNumError text-end p-0 m-0"></p>
+                        </div>
+                    </div>
+                    <hr>
+
+                    @* buttons *@
+                    <div class="form-group text-center">
+                        <input type="button" value="Create" id="saveChangesButton" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#confirmModal" />
+                        <a class="btn btn-primary" asp-controller="Client" asp-action="Details"
+                            asp-route-id="@Model.Client.Id">Back to Client</a>
+                    </div>
+                </div>
+
+                <!-- customer information Modal -->
+                <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5 text-center" id="exampleModalLabel">Confirm Information</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <!--Modal body-->
+                            <p class="modalerror text-center text-danger px-3 m-0"></p>
+                            <div class="modal-body">
+                                <div class="container" id="modalValues">
+                                    <ul class="p-0">
+                                        <!--List-item-->
+                                        <li class="row">
+                                            <div class="downbutton col-12 col-sm-4">CompanyName</div>
+                                            <div class="dubbelpunt col-12 col-sm-2">:</div>
+                                            <div class="thevalue col-12 col-sm-6">
+                                                <p id="modalCompanyName" class="p-0 m-0"></p>
+                                                <p class="CompanyNameError text-end p-0 m-0"></p>
+                                            </div>
+                                        </li>
+                                        <li class="row">
+                                            <div class="downbutton col-12 col-sm-4">Street</div>
+                                            <div class="dubbelpunt col-12 col-sm-2">:</div>
+                                            <div class="thevalue col-12 col-sm-6">
+                                                <p id="modalStreet" class="p-0 m-0"></p>
+                                                <p class="StreetError text-end p-0 m-0"></p>
+                                                <span asp-validation-for="clientInfo.Street" class="text-danger"></span>
+                                            </div>
+                                        </li>
+                                        <li class="row">
+                                            <div class="downbutton col-12 col-sm-4">Zipcode</div>
+                                            <div class="dubbelpunt col-12 col-sm-2">:</div>
+                                            <div class="thevalue col-12 col-sm-6">
+                                                <p id="modalZipcode" class="p-0 m-0"></p>
+                                                <p class="ZipcodeError text-end p-0 m-0"></p>
+                                                <span asp-validation-for="clientInfo.ZipCode" class="text-danger"></span>
+                                            </div>
+                                        </li>
+                                        <li class="row">
+                                            <div class="downbutton col-12 col-sm-4">State</div>
+                                            <div class="dubbelpunt col-12 col-sm-2">:</div>
+                                            <div class="thevalue col-12 col-sm-6">
+                                                <p id="modalState" class="p-0 m-0"></p>
+                                                <p class="StateError text-end p-0 m-0"></p>
+                                                <span asp-validation-for="clientInfo.State" class="text-danger"></span>
+                                            </div>
+                                        </li>
+                                        <li class="row">
+                                            <div class="downbutton col-12 col-sm-4">City</div>
+                                            <div class="dubbelpunt col-12 col-sm-2">:</div>
+                                            <div class="thevalue col-12 col-sm-6">
+                                                <p id="modalCity" class="p-0 m-0"></p>
+                                                <p class="CityError text-end p-0 m-0"></p>
+                                                <span asp-validation-for="clientInfo.City" class="text-danger"></span>
+                                            </div>
+                                        </li>
+                                        <li class="row">
+                                            <div class="downbutton col-12 col-sm-4">Country</div>
+                                            <div class="dubbelpunt col-12 col-sm-2">:</div>
+                                            <div class="thevalue col-12 col-sm-6">
+                                                <p id="modalCountry" class="p-0 m-0"></p>
+                                                <p class="CountryError text-end p-0 m-0"></p>
+                                                <span asp-validation-for="clientInfo.Country" class="text-danger"></span>
+                                            </div>
+                                        </li>
+                                        <li class="row">
+                                            <div class="downbutton col-12 col-sm-4">Adress Num</div>
+                                            <div class="dubbelpunt col-12 col-sm-2">:</div>
+                                            <div class="thevalue col-12 col-sm-6">
+                                                <p id="modalAdressNum" class="p-0 m-0"></p>
+                                                <p class="AdressNumError text-end p-0 m-0"></p>
+                                                <span asp-validation-for="clientInfo.AddressNum" class="text-danger"></span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!--Button to officially submit the form-->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button id="OfficiallySubmitForm" type="button" value="Create" class="btn btn-primary">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script type="module" src="~/js/ResponsiveModal.js" asp-append-version="true"></script>
+<script type="module" src="~/js/CreateClientInfo.js" asp-append-version="true"></script>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
