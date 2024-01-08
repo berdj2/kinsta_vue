@@ -1,0 +1,226 @@
+@model YDCManagementApp.Data.Project
+
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="container">
+    @* Page cardbox *@
+    <div class="mt-5 p-4 bg-light border border-light rounded">
+        @* Page Title *@
+        <div class="col-12 col-sm-6 mb-3 text-center" style="align-self: center; color: white;" color="#fff">
+            <h1 class="h1">Create Project</h1>
+        </div>
+        <hr>
+        <form asp-action="Create" asp-controller="Project" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row">
+                @* left input *@
+                <div id="left" class="col-md-6 col-12">
+                    <div class="form-group">
+                        <label asp-for="ProjectName" class="control-label"></label>
+                        <input id="ProjectName" asp-for="ProjectName" class="form-control" maxlength="50" />
+                        <span asp-validation-for="ProjectName" class="text-danger"></span>
+                        <p class="ProjectNameError"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ClientId" class="control-label">Company name</label>
+                        <select id="ClientId" class="form-control" asp-items="ViewBag.CompanyId"
+                            name="ClientId"></select>
+                        <span asp-validation-for="ClientId" class="text-danger"></span>
+                        <p class="CompanyError"></p>
+                    </div>
+
+                        <div class="form-group">
+                        <label class="control-label">Contact</label>
+                        <select id="ContactId" asp-for="ContactId" class="form-control" disabled></select>
+                        <p class="ContactError"></p>
+                    </div>
+
+ <div class="form-group form-switch p-0">
+    <label class="form-check-label">
+        @Html.DisplayNameFor(model => model.ProjectStatus)
+        <input id="ProjectStatus" type="checkbox" class="form-check-input ml-1" asp-for="ProjectStatus" data-toggle="switch" checked>
+                          </label>
+                <p class="StatusError"></p>
+             </div>
+
+                @* right input *@
+                <div id="right" class="col-md-6 col-12">
+                    <div class="form-group">
+                        <label asp-for="ProjectDeadline" class="control-label"></label>
+                        <input id="ProjectDeadline" asp-for="ProjectDeadline" class="form-control" />
+                        <span asp-validation-for="ProjectDeadline" class="text-danger"></span>
+                        <p class="DeadlineError"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ExpertiseId" class="control-label">Expertise</label>
+                        <select id="ExpertiseId" asp-formaction="ExpertiseId" id="ExpertiseId" class="form-control"
+                            asp-items="ViewBag.ExpertiseId" name="ExpertiseId"></select>
+                        <span asp-validation-for="ExpertiseId" class="text-danger"></span>
+                        <p class="ExpertiseError"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ProjectDescription" class="control-label">Description</label>
+                        <textarea id="Description" asp-for="ProjectDescription" class="form-control"
+                            maxlength="600"></textarea>
+                        <span asp-validation-for="ProjectDescription" class="text-danger"></span>
+                        <p class="DescriptionError"></p>
+                    </div>
+
+                </div>
+            </div>
+            <hr>
+
+            @* Submit Button *@
+            <div class="row">
+                <div class="m-0 text-center">
+                    <button type="button" id="SubmitForm" class="btn btn-success" data-bs-toggle="modal"
+                        data-bs-target="#confirmModal">Create</button>
+                    <a type="button" class="btn btn-primary" asp-action="Index">Back</a>
+                </div>
+            </div>
+
+
+
+            @* Confirm Modal *@
+            <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="ModalBoxLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        @* Modal header *@
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 text-center" id="ModalBoxLabel">Confirm Information</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        @* Modal body *@
+                        <div class="modal-body">
+                            <div class="container" id="modalvalues">
+                                <ul class="p-0">
+                                    <!--List-item-->
+                                    <!--Project Name-->
+                                    <li class="row">
+                                        <div class="downbutton col-12 col-sm-4">Projectname</div>
+                                        <div class="dubbelpunt col-12 col-sm-2">:</div>
+                                        <div class="thevalue col-12 col-sm-6 p-0">
+                                            <p id="Projectnamemodal"></p>
+                                            <p class="ProjectNameError m-0 p-0 text-end"></p>
+                                        </div>
+                                    </li>
+                                    <!--Company-->
+                                    <li class="row">
+                                        <div class="downbutton col-12 col-sm-4">Company</div>
+                                        <div class="dubbelpunt col-12 col-sm-2">:</div>
+                                        <div class="thevalue col-12 col-sm-6 p-0">
+                                            <p id="Companymodal"></p>
+                                            <p class="CompanyError m-0 p-0 text-end"></p>
+                                        </div>
+                                    </li>
+                                    <!--Contact-->
+                                    <li class="row">
+                                        <div class="downbutton col-12 col-sm-4">Contact</div>
+                                        <div class="dubbelpunt col-12 col-sm-2">:</div>
+                                        <div class="thevalue col-12 col-sm-6 p-0">
+                                            <p id="Contactmodal"></p>
+                                            <p class="ContactError m-0 p-0 text-end"></p>
+                                        </div>
+                                    </li>
+                                    <!--Project status-->
+                                    <li class="row">
+                                        <div class="downbutton col-12 col-sm-4">Status</div>
+                                        <div class="dubbelpunt col-12 col-sm-2">:</div>
+                                        <div class="thevalue col-12 col-sm-6 p-0">
+                                            <p id="Statusmodal"></p>
+                                            <p class="StatusError m-0 p-0 text-end"></p>
+                                        </div>
+                                    </li>
+                                    <!--Project deadline-->
+                                    <li class="row">
+                                        <div class="downbutton col-12 col-sm-4">Deadline</div>
+                                        <div class="dubbelpunt col-12 col-sm-2">:</div>
+                                        <div class="thevalue col-12 col-sm-6 p-0">
+                                            <p id="Deadlinemodal"></p>
+                                            <p class="DeadlineError m-0 p-0 text-end"></p>
+                                        </div>
+                                    </li>
+                                    <!--Project Expertise-->
+                                    <li class="row">
+                                        <div class="downbutton col-12 col-sm-4">Expertise</div>
+                                        <div class="dubbelpunt col-12 col-sm-2">:</div>
+                                        <div class="thevalue col-12 col-sm-6 p-0">
+                                            <p id="Expertisemodal"></p>
+                                            <p class="ExpertiseError m-0 p-0 text-end"></p>
+                                        </div>
+                                    </li>
+                                    <!--Description-->
+                                    <li class="row">
+                                        <div class="downbutton col-12 col-sm-4">Description</div>
+                                        <div class="dubbelpunt col-12 col-sm-2">:</div>
+                                        <div class="thevalue col-12 col-sm-6 p-0">
+                                            <p id="Descriptionmodal"></p>
+                                            <p class="DescriptionError m-0 p-0 text-end"></p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!--Button to officialy submit the form-->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" id="OfficiallySubmitForm" value="Create"
+                                class="btn btn-primary">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha384-Ky3mmeQgqUodEqrffoJKuXr+0LlFRyNKrOuyM5U5a5DRG3zt2N54GTVVQF2vQji7"
+        crossorigin="anonymous"></script>
+    <script>
+        // When the document is fully loaded
+        $(document).ready(function () {
+            // Attach a change event handler to the 'ClientId' dropdown
+            $('#ClientId').change(function () {
+                // Get the selected clientId
+                var clientId = $(this).val();
+
+                // Make an AJAX request to the 'GetContactsByClientId' action method
+                $.ajax({
+                    url: '@Url.Action("GetContactsByClientId", "Project")',
+                    type: 'GET',
+                    data: { clientId: clientId },
+                    success: function (response) {
+                        // Clear the 'ContactId' dropdown
+                        var contacts = $('#ContactId');
+                        contacts.empty();
+
+                        // Iterate over the response and add options to the 'ContactId' dropdown
+                        $.each(response, function (i, contact) {
+                            contacts.append($('<option></option>').val(contact.value).text(contact.text));
+                        });
+
+                        // Enable the 'ContactId' dropdown
+                        contacts.prop('disabled', false);
+                    },
+                    error: function (xhr, status, error) {
+                        // Log any errors to the console
+                        console.log(error);
+                    }
+                });
+            });
+        });
+    </script>
+    <script src="~/js/ProjectModalValidationCreate.js" asp-append-version="true"></script>
+}

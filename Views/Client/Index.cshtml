@@ -1,0 +1,117 @@
+@model YDCManagementApp.Models.ProjectsAndCustomerViewModel;
+@{
+}
+<link rel="stylesheet" type="text/css" href="~/css/ProjectIndex.css" asp-append-version="true">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+<body> 
+	<div class="container bg-white rounded p-0">
+		@* <table id="customerTable" class="table table-bordered">  temp values*@
+		<div class="col-6-sm col-8-md col-lg mt-5 p-3">
+			 <table id="example" class="table table-striped" style="width:100%"
+
+                        <!-- Filter container with border -->
+                    <div class="col-12 filter-container">
+
+                        <!-- Filter For The Searchbar -->
+                    <input type="text" class="form-control w-50" placeholder="Search" aria-label="Search" id="searchInput">
+
+                        <!-- Filter For The project -->
+                        <select id="projectFilter" class="form-select">
+                            <option value="">All Projects</option>
+                            @foreach (var project in Model.Projects.Where(p => !p.IsDeleted))
+                            {
+                                <option value="@project.ProjectName">@project.ProjectName</option>
+                            }
+                        </select>
+
+                        <!-- Filter For The Company -->
+                        <select id="companyFilter" class="form-select">
+                            <option value="">All Companies</option>
+                            @foreach (var customer in Model.Clients)
+                            {
+                                <option value="@customer.CompanyName">@customer.CompanyName</option>
+                            }
+                        </select>
+                       <!-- Filter For The Entries -->
+                        <select id="entriesFilter" class="form-select">
+                          <option value="All">All Entries</option>
+                          <option value="10">10 Entries</option>
+                          <option value="20">20 Entries</option>
+                          <option value="50">50 Entries</option>
+                          </select>
+
+                           <!-- Filter For The Status -->
+                         <label id="statusFilter" class="switch">
+                       <input type="checkbox" id="statusCheckbox" onchange="applyFilters()">
+                         <span class="slider round"></span>
+                            </label>
+
+                       <!-- Filter For The Clear Filters -->
+                          <button class="btn btn-secondary" id="clearFilters">Clear Filters</button>
+                        </div>
+                    <!-- End filter container -->
+                <div class="col-12 col-sm-6 mb-3 text-center" style="align-self: center; color: white;" color="#fff">
+                    <h1 class="h1">Contact overview</h1>
+				    <button class="custom-button">Aanmaken</button>
+				<thead>
+					<tr>
+						<th>Logo</th>
+						<th>Company</th>
+						<th>Projects</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model.Clients)
+					{
+						var projectsForCustomer = Model.Projects.Where(p => p.ClientId == item.Id);
+						var projectCount = projectsForCustomer.Count();
+						
+						<tr>
+							<td>
+								<img src="/img/ccv logo.png" alt="" class="image-thumbnail logo" />
+							</td>
+							<td>
+								
+								<a asp-action="Details" asp-route-id="@item.Id">
+								@Html.DisplayFor(modelItem => item.CompanyName)
+								
+								</a>
+							</td>
+							<td>
+								@projectCount
+							</td>
+							<td>
+								<a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">info</a>
+							</td>
+						</tr>
+						<!--End Row-->
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	@* SCRIPTS *@
+	<script>
+		new DataTable('#customerTable', {
+			pagingType: 'simple',
+			scrollX: true,
+			// lengthMenu: [
+			//     [5, 10, 25, 50, -1],
+			//     [5, 10, 25, 50, 'All']
+			// ],
+			lengthMenu: [10],
+			// search: {
+			//     return: true
+			// },
+			"lengthChange": false,
+			language: {
+				search: "_INPUT_",
+				searchPlaceholder: "Search..."
+			},
+		});
+	</script>
+
+</body> 

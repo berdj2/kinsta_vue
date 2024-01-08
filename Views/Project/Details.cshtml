@@ -1,0 +1,185 @@
+@model YDCManagementApp.Models.HoursLogModel;
+
+@{
+}
+@* display project info *@
+<div class="container mt-5 p-0">
+	@*this is where the data will get to be shown*@
+	<div class="col-12 mt-5 p-0">
+		<div class="card border-secondary mb-3" style="max-width: 100%;">
+		@foreach (var project in Model.ProjectsList)
+			{
+			<div class="row">
+				<!--Page Title-->
+				<div class="col-12 col-sm-6 mb-3 text-center" style="align-self: center; color: white;" color="#fff">
+                    <h1 class="h1">Project Details</h1>
+				</div>
+				@*Button*@
+				<div class="col-12 col-sm-4 text-center mt-4">
+
+					<a type="button" class="btn btn-primary" asp-controller="Project" asp-action="Edit" asp-route-id="@project.Id">Edit details</a>
+
+					<a type="button" class="btn btn-danger" asp-controller="Project" asp-action="Delete" asp-route-id="@project.Id">Delete</a>
+					</div>
+			</div>
+
+					<!--Body content-->
+				<div class="card-footer card-header bg-light-secondary border-secondary mt-3">@Html.DisplayFor(modelItem => project.ProjectName)</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-6 p-0">
+							<h5 class="card-title">Client</h5>
+							<h5 class="card-title">Deadline</h5>
+							<h5 class="card-title">Assignment by</h5>
+							<h5 class="card-title">Expertise</h5>
+							<h5 class="card-title">Status</h5>
+						</div>
+						<div class="col-6 p-0">
+							<h5 class="card-title">: @Html.DisplayFor(modelItem => project.ProjectName)</h5>
+							<h5 class="card-title">: @Html.DisplayFor(modelItem => project.ProjectDeadline)</h5>
+							<h5 class="card-title">: @Html.DisplayFor(modelItem => project.Contact.FirstName) @Html.DisplayFor(modelItem => project.Contact.LastName)</h5>
+							<h5 class="card-title">: @Html.DisplayFor(modelItem => project.Expertise.Name)</h5>
+							<h5>
+								@(project.ProjectStatus ? Html.Raw(": <span class='text-success'><span>&#x2713;</span> Project Active</span>") : Html.Raw(": <span class='text-danger'><span>&#x2718;</span> Project Inactive</span>"))
+							</h5>
+							</div>
+						</div>
+					</div>
+					<div class="card-footer card-header bg-light-secondary border-secondary">Description</div>
+					<div class="card-body ">
+						<p class="card-text">
+							@Html.DisplayFor(modelItem => project.ProjectDescription)
+						</p>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+
+@* Insert new worked hours record for this project *@
+<div class="container bg-white">
+	<form asp-action="Create" asp-controller="ProjectHoursLogs" method="post">
+
+		<input type="hidden" asp-for="ProjectHoursLogs.ProjectId" value="@Model.SelectedProject.Id" />
+		<input type="hidden" asp-for="ProjectHoursLogs.UserId" value="@Model.SelectedUser.UserId" />
+
+		
+		<div class="row p-3">
+			<div class="col-6 column-calender p-2">
+				<div class="form-group">
+					<label asp-for="ProjectHoursLogs.DateStartTime" class="control-label">Date Start Time</label>
+					<input type="datetime-local" id="DateStartTime" asp-for="ProjectHoursLogs.DateStartTime" class="form-control form-control-sm" name="ProjectHoursLogs.DateStartTime" value="" required/>
+					<span asp-validation-for="ProjectHoursLogs.DateStartTime" class="text-danger StartTimeError"></span>
+				</div>
+			</div>
+
+			<div class="col-4 column-calender p-2">
+				<div class="form-group">
+					<label asp-for="ProjectHoursLogs.DateEndTime" class="control-label">Date End Time</label>
+					<input type="datetime-local" id="DateEndTime" asp-for="ProjectHoursLogs.DateEndTime" class="form-control form-control-sm" name="ProjectHoursLogs.DateEndTime" value="" required/>
+					<span asp-validation-for="ProjectHoursLogs.DateEndTime" class="text-danger EndTimeError"></span>
+				</div>
+			</div>
+
+			<div class="col-6 p-2">
+				<div class="form-group">
+					<label asp-for="ProjectHoursLogs.DateTimeDiff" class="control-label">Hours Worked</label>
+					<input type="text" id="DateTimeDiff" asp-for="ProjectHoursLogs.DateTimeDiff" class="form-control form-control-sm" readonly value="">
+					<span asp-validation-for="ProjectHoursLogs.DateTimeDiff" class="text-danger TimeDiffError"></span>
+				</div>
+			</div>
+
+			</div>
+		<hr>
+
+		@* button *@
+		<button type="button" id="savechanges" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#LoghoursModal">Add Hours</button>
+
+		@*Modal*@
+		<div class="modal fade" id="LoghoursModal" tabindex="-1" aria-labelledby="LoghoursModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Log Hours Confirmation</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>Date Time: <span id="ModalDateStartTime"></span><p>
+						<p class="StartTimeError"></p>
+						<p>Start Time: <span id="ModalDateEndTime"></span><p>
+						<p class="EndTimeError"></p>
+						<p>End Time: <span id="ModalDateTimeDiff"></span><p>
+						<p class="TimeDiffError"></p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" id="OfficiallySubmitForm" class="btn btn-success">Add Hours</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+<br>
+
+@* table data of worked hours for this project *@
+<div class="container bg-white">
+	<table id="customerTable" class="table table-bordered">
+		<thead>
+			<tr>
+				<th>User</th>
+				<th>starttime</th>
+				<th>endtime</th>
+				<th>Hours Worked</th>
+				<th>Edit</th>
+			</tr>
+		</thead>
+		<tbody> 
+			@foreach (var hoursLog in Model.ProjectHoursLogsList)         
+			{
+				<tr>
+				<td>
+						@hoursLog.User.FirstName @hoursLog.User.LastName
+					</td>
+					<td>
+						@hoursLog.DateStartTime
+					</td>
+					<td>
+						@hoursLog.DateEndTime
+					</td>
+					<td>
+						@hoursLog.DateTimeDiff
+					</td>
+					<td>
+						<a href="@Url.Action("Edit", "ProjectHoursLogs", new { projectId = @Model.ProjectsList.FirstOrDefault().Id, recordId = hoursLog.Id })" class="btn btn-primary">Edit</a>
+					</td>	
+				</tr>
+				}
+		</tbody>
+	</table>
+</div>
+
+@* add js-script to the view *@
+<script src="~/js/ProjectModalDetails.js" asp-append-version="true"></script>
+@* load the table as datatable from the api datatables. *@
+	<script>
+
+		'use strict';
+		new DataTable('#customerTable', {
+		pagingType: 'simple',
+		scrollX: true,
+		// lengthMenu: [
+		//     [5, 10, 25, 50, -1],
+		//     [5, 10, 25, 50, 'All']
+		// ],
+		lengthMenu: [10],
+		// search: {
+		//     return: true
+		// },
+		"lengthChange": false,
+		language: {
+			search: "_INPUT_",
+			searchPlaceholder: "Search..."
+		},
+		});	
+		</script>

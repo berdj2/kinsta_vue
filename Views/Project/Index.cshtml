@@ -1,0 +1,169 @@
+@model YDCManagementApp.Models.ProjectsAndCustomerViewModel;
+@{
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="~/css/ProjectIndex.css" asp-append-version="true">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+    <!-- Add necessary scripts, styles, or CDN links here -->
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12 px-1 mb-3">
+            <div class="row">
+                <div class="col-12 col-sm-6 mb-3 text-center" style="align-self: center; color: white;" color="#fff">
+                    <h1 class="h1">Project overview</h1>
+                      <button class="custom-button">Add Project</button>
+                </div>
+            </div>
+            <div class="col-12 px-1">
+                <div class="row">
+                     <!-- Filter container with border -->
+                    <div class="col-12 filter-container">
+
+                        <!-- Filter For The Searchbar -->
+                    <input type="text" class="form-control w-50" placeholder="Search" aria-label="Search" id="searchInput">
+
+                        <!-- Filter For The project -->
+                        <select id="projectFilter" class="form-select">
+                            <option value="">All Projects</option>
+                            @foreach (var project in Model.Projects.Where(p => !p.IsDeleted))
+                            {
+                                <option value="@project.ProjectName">@project.ProjectName</option>
+                            }
+                        </select>
+
+                        <!-- Filter For The Company -->
+                        <select id="companyFilter" class="form-select">
+                            <option value="">All Companies</option>
+                            @foreach (var customer in Model.Clients)
+                            {
+                                <option value="@customer.CompanyName">@customer.CompanyName</option>
+                            }
+                        </select>
+                       <!-- Filter For The Entries -->
+                        <select id="entriesFilter" class="form-select">
+                          <option value="All">All Entries</option>
+                          <option value="10">10 Entries</option>
+                          <option value="20">20 Entries</option>
+                          <option value="50">50 Entries</option>
+                          </select>
+
+                           <!-- Filter For The Status -->
+                         <label id="statusFilter" class="switch">
+                       <input type="checkbox" id="statusCheckbox" onchange="applyFilters()">
+                         <span class="slider round"></span>
+                            </label>
+
+                       <!-- Filter For The Clear Filters -->
+                          <button class="btn btn-secondary" id="clearFilters">Clear Filters</button>
+                        </div>
+                    <!-- End filter container -->
+                </div>
+                <div class="table-responsive">
+                    <table id="table" class="table table-striped" style="width:100% justify-content:center">
+                        <thead class="thead-white">
+                        <tr>
+                            <th>Client</th>
+                            <th>Project Name</th>
+                            <th>contacts</th>
+                            <th>Deadline</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var project in Model.Projects.Where(p => !p.IsDeleted))
+                        {
+                            <tr>
+                                <td>
+                                    @foreach (var customer in Model.Clients.Where(c => c.Id == project.ClientId))
+                                    {
+                                        <a asp-action="Details" asp-route-id="@project.Id">
+                                            @Html.DisplayFor(modelItem => customer.CompanyName)
+                                        </a>
+                                    }
+                                </td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@project.Id">
+                                        @Html.DisplayFor(modelItem => project.ProjectName)
+                                    </a>
+                                </td>
+                                 <td>
+                                    @Html.DisplayFor(modelItem => project.ContactId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => project.ProjectDeadline)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => project.ProjectStatus)
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+   $(document).ready(function () {
+            $('#searchInput, #projectFilter, #companyFilter, #statusFilter, #entriesFilter').on('input change', function () {
+                filterTable();
+            });
+
+            $('#clearFilters').on('click', function () {
+                $('#searchInput, #projectFilter, #companyFilter, #statusFilter, #entriesFilter').val('');
+                $('#statusFilter input').prop('checked', false); // Clear checkbox
+                filterTable();
+            });
+
+            function filterTable() {
+                var searchFilter = $('#searchInput').val().toLowerCase();
+                var projectFilter = $('#projectFilter').val().toLowerCase();
+                var companyFilter = $('#companyFilter').val().toLowerCase();
+                var statusFilter = $('#statusFilter input').is(':checked');
+                var entriesFilter = $('#entriesFilter').val().toLowerCase();
+
+                $('table tbody tr').each(function () {
+                    var projectName = $(this).find('td:eq(1)').text().toLowerCase();
+                    var company = $(this).find('td:eq(0)').text().toLowerCase();
+                    var projectStatus = $(this).find('td:eq(3)').text().toLowerCase();
+
+                    var projectMatch = projectFilter === '' || projectName.includes(projectFilter);
+                    var companyMatch = companyFilter === '' || company.includes(companyFilter);
+                    var statusMatch = statusFilter === false || projectStatus.includes('your_filter_value_here');
+                    var searchMatch = searchFilter === '' ||
+                        projectName.includes(searchFilter) ||
+                        company.includes(searchFilter);
+
+                    if (projectMatch && companyMatch && statusMatch && searchMatch) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+
+                // Handle entries filter
+                var rowCount = $('table tbody tr:visible').length;
+                var showAll = entriesFilter === 'all' || entriesFilter >= rowCount;
+                var rowsToShow = showAll ? rowCount : entriesFilter;
+
+                $('table tbody tr').hide();
+                $('table tbody tr:lt(' + rowsToShow + ')').show();
+            }
+        });
+
+</script>
+
+<!-- Add necessary script references here (e.g., jQuery) -->
+</body>
+</html>
